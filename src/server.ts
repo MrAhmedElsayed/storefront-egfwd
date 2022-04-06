@@ -4,7 +4,7 @@ import cors from 'cors'
 // import book_routes from './handlers/book'
 
 const app: express.Application = express()
-const address: string = "0.0.0.0:3000"
+const address = "0.0.0.0:3000"
 
 const corsOptions = {
     origin: 'http://someotherdomain.com',
