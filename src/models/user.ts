@@ -1,6 +1,10 @@
 // @ts-ignore
 import Client from '../database'
-
+/*
+Index [token required]
+Show [token required]
+Create N[token required]
+*/
 export type User = {
   id?: string
   username: string

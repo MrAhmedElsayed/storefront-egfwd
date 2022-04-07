@@ -1,3 +1,7 @@
+/*
+Current Order by user (args: user id)[token required]
+*/
+
 // ORDER MODEL
 // We added the method to attach a product to and order in the order model.
 /*
