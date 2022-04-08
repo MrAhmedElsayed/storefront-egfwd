@@ -6,8 +6,8 @@ const store = new OrderModel()
 
 const orderRoutes = (app: express.Application) => {
   app.get('/orders', index)
-  app.get('user/:userId/orders', show)
-  app.post('/orders')
+  app.get('/user/:userId/orders', show)
+  app.post('/orders', create)
 
   //    add products to order
   app.post('/orders/:orderId/products')
@@ -18,20 +18,36 @@ const index = async (_req: Request, res: Response) => {
   res.json(orders)
 }
 
-const show = async (_req: Request, res: Response) => {
+const show = async (req: Request, res: Response) => {
   try {
-    const order = await store.show(_req.params.userId)
+    const order = await store.show(req.params.userId)
+    console.log(order)
     if (order) {
       res.json(order)
     } else {
       res.status(404).json({
-        message: `Product with id = (${_req.params.productId}) not found`,
+        message: `Product with id = (${req.params.productId}) not found`,
       })
     }
   } catch (error) {
-    res.status(401).json({
+    res.status(400).json({
       message: error,
     })
+  }
+}
+
+const create = async (req: Request, res: Response) => {
+  try {
+    const order: Order = {
+      id: req.body.id,
+      status: req.body.status,
+      user_id: req.body.user_id,
+    }
+
+    const createOrder = await store.create(order)
+    res.json(createOrder)
+  } catch (error) {
+    res.status(400).json({ error: error })
   }
 }
 

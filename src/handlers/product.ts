@@ -2,6 +2,13 @@
 import express, { Request, Response } from 'express'
 import { Product, ProductModel } from '../models/product'
 
+/*
+--- Products ---
+Index
+Show
+Create [token required]
+*/
+
 const store = new ProductModel()
 
 const productRoutes = (app: express.Application) => {

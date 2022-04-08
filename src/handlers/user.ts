@@ -1,8 +1,7 @@
 // USER HANDLERS
 import express, { Request, Response } from 'express'
 import { User, UserStore } from '../models/user'
-import jwt from 'jsonwebtoken'
-
+import { generateToken } from '../utils/generateToken'
 /*
 Index [token required]
 Show [token required]
@@ -31,7 +30,8 @@ const authenticate = async (req: Request, res: Response) => {
     const userAuth = await store.authenticate(user.username, user.password)
     console.log(userAuth)
     if (userAuth) {
-      res.json(userAuth)
+      const token = await generateToken(userAuth)
+      res.json(token)
     } else {
       res.status(401).json({ message: 'Invalid credentials' })
     }
@@ -65,11 +65,7 @@ const create = async (req: Request, res: Response) => {
     }
 
     const createUser = await store.create(user)
-    const token = jwt.sign(
-      { user: createUser },
-      process.env.TOKEN_SECRET || '',
-      { expiresIn: '3h' }
-    )
+    const token = await generateToken(createUser)
     res.json(token)
   } catch (error) {
     res.status(400).json({ error: error })

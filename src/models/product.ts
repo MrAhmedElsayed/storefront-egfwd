@@ -1,12 +1,7 @@
 // PRODUCT MODEL
 // @ts-ignore
 import Client from '../database'
-/*
-Products
-Index
-Show
-Create [token required]
-*/
+
 export type Product = {
   id: number
   name: string

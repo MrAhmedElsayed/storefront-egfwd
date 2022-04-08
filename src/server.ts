@@ -4,6 +4,7 @@ import cors from 'cors'
 import userRoutes from './handlers/user'
 import productRoutes from './handlers/product'
 import morgan from 'morgan'
+import orderRoutes from './handlers/order'
 
 const app: express.Application = express()
 const address = '0.0.0.0:3000'
@@ -22,6 +23,7 @@ app.get('/', function (req: Request, res: Response) {
   res.send('Hello World!')
 })
 
+orderRoutes(app)
 productRoutes(app)
 userRoutes(app)
 

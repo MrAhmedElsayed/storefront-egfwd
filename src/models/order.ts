@@ -1,4 +1,5 @@
 // ORDER MODEL
+// @ts-ignore
 import Client from '../database'
 
 /*
@@ -35,11 +36,14 @@ export class OrderModel {
       const conn = await Client.connect()
       const result = await conn.query(userSql, [userId])
       const user = result.rows[0]
-      if (user) {
+
+      if (!user) {
+        console.log('user not found')
         throw new Error(
           `Could not get orders for user ${userId} because user does not exist`
         )
       }
+      console.log('USER', user)
       conn.release()
     } catch (err) {
       throw new Error(`${err}`)
@@ -48,7 +52,7 @@ export class OrderModel {
     try {
       // @ts-ignore
       const connection = await Client.connect()
-      const sql = 'SELECT * FROM orders WHERE id = $1 AND user_id = $2'
+      const sql = 'SELECT * FROM orders WHERE user_id = $1'
       const result = await connection.query(sql, [userId])
       connection.release()
       return result.rows
@@ -61,6 +65,7 @@ export class OrderModel {
     try {
       // @ts-ignore
       const connection = await Client.connect()
+      // get default status
       const sql =
         'INSERT INTO orders (status, user_id) VALUES ($1, $2) RETURNING *'
       const result = await connection.query(sql, [data.status, data.user_id])
