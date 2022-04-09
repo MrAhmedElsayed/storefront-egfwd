@@ -1,7 +1,4 @@
-// PRODUCT MODEL
-// @ts-ignore
 import Client from '../database'
-import { isUserExist, isOrderBelongToUser } from '../utils/isModelExist'
 
 export type Product = {
   id: number
@@ -12,7 +9,6 @@ export type Product = {
 export class ProductModel {
   async index(): Promise<Product[]> {
     try {
-      // @ts-ignore
       const connection = await Client.connect()
       const sql = 'SELECT * FROM products'
       const result = await connection.query(sql)
@@ -25,7 +21,6 @@ export class ProductModel {
 
   async show(productId: string): Promise<Product> {
     try {
-      // @ts-ignore
       const connection = await Client.connect()
       const sql = 'SELECT * FROM products WHERE id = $1'
       const result = await connection.query(sql, [productId])
@@ -38,7 +33,6 @@ export class ProductModel {
 
   async create(data: Product): Promise<Product> {
     try {
-      // @ts-ignore
       const connection = await Client.connect()
       const sql =
         'INSERT INTO products (name, price) VALUES ($1, $2) RETURNING *'
@@ -52,14 +46,11 @@ export class ProductModel {
 
   async userOrderProducts(userID: string, orderID: string): Promise<Product[]> {
     //show how the product belongs to a single order. If we were to add a user as an owner of the order
-
     try {
-      // @ts-ignore
       const connection = await Client.connect()
       const sql =
         'SELECT * FROM products INNER JOIN order_products ON products.id = order_products.product_id WHERE order_id= $1;'
       const result = await connection.query(sql, [orderID])
-
       connection.release()
       return result.rows
     } catch (error) {

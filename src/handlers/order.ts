@@ -1,6 +1,10 @@
-// ORDER HANDLERS
 import express, { Request, Response } from 'express'
 import { Order, OrderModel } from '../models/order'
+import { isUserExist } from '../utils/isModelExist'
+import { orderIsOpen } from '../utils/getOrderStatus'
+/*
+Current Order by user (args: user id)[token required]
+*/
 
 const store = new OrderModel()
 
@@ -8,8 +12,7 @@ const orderRoutes = (app: express.Application) => {
   app.get('/orders', index)
   app.get('/user/:userId/orders', show)
   app.post('/orders', create)
-
-  //    add products to order
+  // add products to order
   app.post('/orders/:orderId/products', addProduct)
 }
 
@@ -20,23 +23,23 @@ const index = async (_req: Request, res: Response) => {
 
 const show = async (req: Request, res: Response) => {
   try {
-    const order = await store.show(req.params.userId)
-    console.log(req.params.userId)
-    if (order) {
-      res.json(order)
-    } else {
+    const userExist = await isUserExist(req.params.userId)
+    if (!userExist) {
       res.status(404).json({
-        message: `user with id ${req.params.userId} not found or has no orders`
+        error: 'User not found',
       })
+    } else {
+      const orders = await store.show(req.params.userId)
+      res.status(200).json(orders)
     }
   } catch (error) {
     if (error instanceof Error) {
       res.status(400).json({
-        message: error,
+        error: error,
       })
     } else {
       res.status(400).json({
-        message: error,
+        error: error,
       })
     }
   }
@@ -49,7 +52,6 @@ const create = async (req: Request, res: Response) => {
       status: req.body.status,
       user_id: req.body.user_id,
     }
-
     const createOrder = await store.create(order)
     res.json(createOrder)
   } catch (error) {
@@ -58,15 +60,29 @@ const create = async (req: Request, res: Response) => {
 }
 
 const addProduct = async (req: Request, res: Response) => {
-  try {
-    const order = await store.addProduct(
-      parseInt(req.body.quantity),
-      req.params.orderId,
-      req.body.product_id.toString()
-    )
-    res.json(order)
-  } catch (error) {
-    res.status(400).json({ error: error })
+  //making sure the order is open and can have new products
+  const orderOpen = await orderIsOpen(req.params.orderId)
+  if (!orderOpen) {
+    res.status(400).json(`Order is completed Or not found`)
+  } else {
+    try {
+      const order = await store.addProduct(
+        parseInt(req.body.quantity),
+        req.params.orderId,
+        req.body.product_id.toString()
+      )
+      res.json(order)
+    } catch (err) {
+      if (err instanceof Error) {
+        res.status(400).json({
+          error: err,
+        })
+      } else {
+        res.status(400).json({
+          error: err,
+        })
+      }
+    }
   }
 }
 

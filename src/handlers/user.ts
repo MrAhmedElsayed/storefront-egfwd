@@ -1,4 +1,3 @@
-// USER HANDLERS
 import express, { Request, Response } from 'express'
 import { User, UserStore } from '../models/user'
 import { generateToken } from '../utils/generateToken'
@@ -28,7 +27,6 @@ const authenticate = async (req: Request, res: Response) => {
 
   try {
     const userAuth = await store.authenticate(user.username, user.password)
-    console.log(userAuth)
     if (userAuth) {
       const token = await generateToken(userAuth)
       res.json(token)

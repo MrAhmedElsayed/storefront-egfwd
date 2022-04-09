@@ -1,4 +1,3 @@
-// PRODUCT HANDLERS
 import express, { Request, Response } from 'express'
 import { Product, ProductModel } from '../models/product'
 import { isOrderBelongToUser, isUserExist } from '../utils/isModelExist'
@@ -40,7 +39,6 @@ const show = async (_req: Request, res: Response) => {
   }
 }
 
-// todo ask for token
 const create = async (req: Request, res: Response) => {
   try {
     const product: Product = {

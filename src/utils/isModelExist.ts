@@ -1,9 +1,7 @@
-// @ts-ignore
 import Client from '../database'
 
 export const isUserExist = async (id: string): Promise<boolean> => {
   // check if user exist in database
-  // @ts-ignore
   const connection = await Client.connect()
   const user = await connection.query('SELECT * FROM users WHERE id = $1', [id])
   connection.release()
@@ -16,7 +14,6 @@ export const isOrderBelongToUser = async (
   userId: string
 ): Promise<boolean> => {
   // check if order belong to user
-  // @ts-ignore
   const connection = await Client.connect()
   const order = await connection.query(
     'SELECT * FROM orders WHERE id=$1 AND user_id = $2',

@@ -12,25 +12,27 @@ const {
   ENV,
 } = process.env
 
-let client
-console.log(ENV)
+// Documentation: https://node-postgres.com/api/pool
+// Connecting to the database in case of Development
+const pool = new Pool({
+  host: POSTGRES_HOST,
+  database: POSTGRES_DB,
+  user: POSTGRES_USER,
+  password: POSTGRES_PASSWORD,
+  max: 20,
+  idleTimeoutMillis: 30000,
+})
 
-if (ENV === 'test') {
-  client = new Pool({
-    host: POSTGRES_HOST,
-    database: POSTGRES_TEST_DB,
-    user: POSTGRES_USER,
-    password: POSTGRES_PASSWORD,
-  })
-}
+// Connecting to the database in case of test
+const poolTest = new Pool({
+  host: POSTGRES_HOST,
+  database: POSTGRES_TEST_DB,
+  user: POSTGRES_USER,
+  password: POSTGRES_PASSWORD,
+  max: 20,
+  idleTimeoutMillis: 30000,
+})
 
-if (ENV === 'dev') {
-  client = new Pool({
-    host: POSTGRES_HOST,
-    database: POSTGRES_DB,
-    user: POSTGRES_USER,
-    password: POSTGRES_PASSWORD,
-  })
-}
-
-export default client
+const Client = ENV === 'test' ? poolTest : pool
+// Export the connection pool
+export default Client
