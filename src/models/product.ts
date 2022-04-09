@@ -1,6 +1,7 @@
 // PRODUCT MODEL
 // @ts-ignore
 import Client from '../database'
+import { isUserExist, isOrderBelongToUser } from '../utils/isModelExist'
 
 export type Product = {
   id: number
@@ -46,6 +47,23 @@ export class ProductModel {
       return result.rows[0]
     } catch (error) {
       throw new Error(`could not create product: ${error}`)
+    }
+  }
+
+  async userOrderProducts(userID: string, orderID: string): Promise<Product[]> {
+    //show how the product belongs to a single order. If we were to add a user as an owner of the order
+
+    try {
+      // @ts-ignore
+      const connection = await Client.connect()
+      const sql =
+        'SELECT * FROM products INNER JOIN order_products ON products.id = order_products.product_id WHERE order_id= $1;'
+      const result = await connection.query(sql, [orderID])
+
+      connection.release()
+      return result.rows
+    } catch (error) {
+      throw new Error(`could not get product: ${error}`)
     }
   }
 }

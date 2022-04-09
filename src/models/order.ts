@@ -84,12 +84,17 @@ export class OrderModel {
     productId: string
   ): Promise<Order> {
     // get order seeing if it is open
+    console.log('quantity', quantity)
+    console.log('orderId', orderId)
+    console.log('productId', productId)
+
     try {
       const orderSql = 'SELECT * FROM orders WHERE id=($1)'
       //@ts-ignore
       const conn = await Client.connect()
       const result = await conn.query(orderSql, [orderId])
       const order = result.rows[0]
+      console.log('order', order)
       if (order.status !== 'open') {
         throw new Error(
           `Could not add product ${productId} to order ${orderId} because order status is ${order.status}`

@@ -10,7 +10,7 @@ const orderRoutes = (app: express.Application) => {
   app.post('/orders', create)
 
   //    add products to order
-  app.post('/orders/:orderId/products')
+  app.post('/orders/:orderId/products', addProduct)
 }
 
 const index = async (_req: Request, res: Response) => {
@@ -21,18 +21,24 @@ const index = async (_req: Request, res: Response) => {
 const show = async (req: Request, res: Response) => {
   try {
     const order = await store.show(req.params.userId)
-    console.log(order)
+    console.log(req.params.userId)
     if (order) {
       res.json(order)
     } else {
       res.status(404).json({
-        message: `Product with id = (${req.params.productId}) not found`,
+        message: `user with id ${req.params.userId} not found or has no orders`
       })
     }
   } catch (error) {
-    res.status(400).json({
-      message: error,
-    })
+    if (error instanceof Error) {
+      res.status(400).json({
+        message: error,
+      })
+    } else {
+      res.status(400).json({
+        message: error,
+      })
+    }
   }
 }
 
@@ -46,6 +52,19 @@ const create = async (req: Request, res: Response) => {
 
     const createOrder = await store.create(order)
     res.json(createOrder)
+  } catch (error) {
+    res.status(400).json({ error: error })
+  }
+}
+
+const addProduct = async (req: Request, res: Response) => {
+  try {
+    const order = await store.addProduct(
+      parseInt(req.body.quantity),
+      req.params.orderId,
+      req.body.product_id.toString()
+    )
+    res.json(order)
   } catch (error) {
     res.status(400).json({ error: error })
   }

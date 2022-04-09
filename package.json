@@ -4,7 +4,6 @@
   "main": "index.js",
   "repository": "git@github.com:MrAhmedElsayed/storefront-egfwd.git",
   "author": "MrAhmedElsayed <ahmedsayed551991@gmail.com>",
-  "license": "MIT",
   "scripts": {
     "dev": "nodemon --exec npx ts-node ./src/server.ts",
     "start": "npx ts-node src/server.ts",
@@ -13,8 +12,8 @@
     "test": "set ENV=test db-migrate --env test up && jasmine-ts && db-migrate db:drop test",
     "tsc": "tsc",
     "format": "prettier --config .prettierrc \"src/**/*.{js,html,ts}\" --write",
-    "lint": "eslint --ext \"src/**/*.{js,ts}\"",
-    "lint:fix": "npm run lint -- --fix"
+    "lint": "yarn format && eslint --ext \"src/**/*.{js,ts}\"",
+    "lint:fix": "yarn lint --fix"
   },
   "dependencies": {
     "bcrypt": "5.0.1",
