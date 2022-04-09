@@ -35,7 +35,6 @@ export class OrderModel {
   async create(data: Order): Promise<Order> {
     try {
       const connection = await Client.connect()
-      // get default status
       const sql =
         'INSERT INTO orders (status, user_id) VALUES ($1, $2) RETURNING *'
       const result = await connection.query(sql, [data.status, data.user_id])

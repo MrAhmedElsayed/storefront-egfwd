@@ -2,6 +2,7 @@ import express, { Request, Response } from 'express'
 import { Order, OrderModel } from '../models/order'
 import { isUserExist } from '../utils/isModelExist'
 import { orderIsOpen } from '../utils/getOrderStatus'
+import { verifyAuthToken } from '../middlewares/verifyAuthTokenMIDD'
 /*
 Current Order by user (args: user id)[token required]
 */
@@ -10,10 +11,10 @@ const store = new OrderModel()
 
 const orderRoutes = (app: express.Application) => {
   app.get('/orders', index)
-  app.get('/user/:userId/orders', show)
-  app.post('/orders', create)
+  app.get('/user/:userId/orders', verifyAuthToken, show)
+  app.post('/user/:userId/create-order', verifyAuthToken, create)
   // add products to order
-  app.post('/orders/:orderId/products', addProduct)
+  app.post('/orders/:orderId/products', verifyAuthToken, addProduct)
 }
 
 const index = async (_req: Request, res: Response) => {
@@ -50,7 +51,7 @@ const create = async (req: Request, res: Response) => {
     const order: Order = {
       id: req.body.id,
       status: req.body.status,
-      user_id: req.body.user_id,
+      user_id: parseInt(req.params.userId),
     }
     const createOrder = await store.create(order)
     res.json(createOrder)
