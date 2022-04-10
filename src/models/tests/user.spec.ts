@@ -1,8 +1,8 @@
-import { ProductModel } from '../product'
+import { UserStore } from '../user'
 
-const store = new ProductModel()
+const store = new UserStore()
 
-describe('Product Model', () => {
+describe('User Model', () => {
   it('should have an index method', () => {
     expect(store.index).toBeDefined()
   })
@@ -16,19 +16,23 @@ describe('Product Model', () => {
   })
 
   it('should have a User Products that belong to Order method', () => {
-    expect(store.userOrderProducts).toBeDefined()
+    expect(store.authenticate).toBeDefined()
   })
 
   it('create method should add a product', async () => {
     const result = await store.create({
       id: 1,
-      name: 'Corsair Vengeance RGB Pro SL 32GB',
-      price: 250,
+      username: 'sarah',
+      first_name: 'sara',
+      last_name: 'Ali',
+      password: '123456',
     })
     expect(result).toEqual({
       id: 1,
-      name: 'Corsair Vengeance RGB Pro SL 32GB',
-      price: 250,
+      username: 'sarah',
+      first_name: 'sara',
+      last_name: 'Ali',
+      password: '123456',
     })
   })
 
@@ -37,8 +41,10 @@ describe('Product Model', () => {
     expect(result).toEqual([
       {
         id: 1,
-        name: 'Corsair Vengeance RGB Pro SL 32GB',
-        price: 250,
+        username: 'sarah',
+        first_name: 'sara',
+        last_name: 'Ali',
+        password: '123456',
       },
     ])
   })
@@ -47,8 +53,10 @@ describe('Product Model', () => {
     const result = await store.show('1')
     expect(result).toEqual({
       id: 1,
-      name: 'Corsair Vengeance RGB Pro SL 32GB',
-      price: 250,
+      username: 'sarah',
+      first_name: 'sara',
+      last_name: 'Ali',
+      password: '123456',
     })
   })
 })

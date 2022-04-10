@@ -1,8 +1,8 @@
-import { ProductModel } from '../product'
+import { OrderModel } from '../order'
 
-const store = new ProductModel()
+const store = new OrderModel()
 
-describe('Product Model', () => {
+describe('Order Model', () => {
   it('should have an index method', () => {
     expect(store.index).toBeDefined()
   })
@@ -16,19 +16,19 @@ describe('Product Model', () => {
   })
 
   it('should have a User Products that belong to Order method', () => {
-    expect(store.userOrderProducts).toBeDefined()
+    expect(store.addProduct).toBeDefined()
   })
 
   it('create method should add a product', async () => {
     const result = await store.create({
       id: 1,
-      name: 'Corsair Vengeance RGB Pro SL 32GB',
-      price: 250,
+      status: 'open',
+      user_id: 1,
     })
     expect(result).toEqual({
       id: 1,
-      name: 'Corsair Vengeance RGB Pro SL 32GB',
-      price: 250,
+      status: 'open',
+      user_id: 1,
     })
   })
 
@@ -37,18 +37,20 @@ describe('Product Model', () => {
     expect(result).toEqual([
       {
         id: 1,
-        name: 'Corsair Vengeance RGB Pro SL 32GB',
-        price: 250,
+        status: 'open',
+        user_id: 1,
       },
     ])
   })
 
   it('show method should return the correct product', async () => {
     const result = await store.show('1')
-    expect(result).toEqual({
-      id: 1,
-      name: 'Corsair Vengeance RGB Pro SL 32GB',
-      price: 250,
-    })
+    expect(result).toEqual([
+      {
+        id: 1,
+        status: 'open',
+        user_id: 1,
+      },
+    ])
   })
 })
