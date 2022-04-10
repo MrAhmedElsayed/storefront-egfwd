@@ -14,7 +14,7 @@ const {
 
 // Documentation: https://node-postgres.com/api/pool
 // Connecting to the database in case of Development
-const pool = new Pool({
+const poolDev = new Pool({
   host: POSTGRES_HOST,
   database: POSTGRES_DB,
   user: POSTGRES_USER,
@@ -33,6 +33,7 @@ const poolTest = new Pool({
   idleTimeoutMillis: 30000,
 })
 
-const Client = ENV === 'test' ? poolTest : pool
+const Client = ENV === 'test' ? poolTest : poolDev
+console.log(`Connected to ${ENV} database`)
 // Export the connection pool
 export default Client

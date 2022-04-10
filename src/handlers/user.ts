@@ -15,6 +15,7 @@ const userRoutes = (app: express.Application) => {
   app.get('/users', verifyAuthToken, index)
   app.get('/users/:userId/', verifyAuthToken, show)
   app.post('/users', verifyAuthToken, create)
+  // app.post('/users', create)
 }
 
 const authenticate = async (req: Request, res: Response) => {
