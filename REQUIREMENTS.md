@@ -21,22 +21,40 @@ These are the notes from a meeting with the frontend developer that describe wha
 - [OPTIONAL] Completed Orders by user (args: user id)[token required]
 
 ## Data Shapes
+
 #### Product
--  id
-- name
-- price
-- [OPTIONAL] category
+| Field | Data Type     |
+| :-------- | :------- |
+| `id` | `SERIAL PRIMARY KEY` |
+| `name` | `VARCHAR(64) NOT NULL` |
+| `price` | `integer NOT NULL` |
+
 
 #### User
-- id
-- firstName
-- lastName
-- password
+| Field | Data Type     |
+| :-------- | :------- |
+| `id` | `SERIAL PRIMARY KEY` |
+| `username` | `VARCHAR(30) NOT NULL` |
+| `firstName` | `VARCHAR(15) NOT NULL` |
+| `lastName` | `VARCHAR(15) NOT NULL` |
+| `password` | `VARCHAR(100) NOT NULL` |
 
-#### Orders
-- id
-- id of each product in the order
-- quantity of each product in the order
-- user_id
-- status of order (active or complete)
+Note : I prefer using decimal type for price
+
+
+#### Order
+| Field | Data Type     |
+| :-------- | :------- |
+| `id` | `SERIAL PRIMARY KEY` |
+| `status` | `VARCHAR(15) DEFAULT 'open'` |
+| `user_id` | `bigint REFERENCES users(id) NOT NULL` |
+
+
+#### Order-Products
+| Field | Data Type     |
+| :-------- | :------- |
+| `id` | `SERIAL PRIMARY KEY` |
+| `quantity` | `integer` |
+| `order_id` | `bigint REFERENCES orders(id)` |
+| `product_id` | `bigint REFERENCES products(id)` |
 

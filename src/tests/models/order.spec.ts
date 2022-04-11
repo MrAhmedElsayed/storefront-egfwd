@@ -1,8 +1,8 @@
-import { UserStore } from '../user'
+import { OrderModel } from '../../models/order'
 
-const store = new UserStore()
+const store = new OrderModel()
 
-describe('User Model', () => {
+describe('Order Model', () => {
   it('should have an index method', () => {
     expect(store.index).toBeDefined()
   })
@@ -16,23 +16,19 @@ describe('User Model', () => {
   })
 
   it('should have a User Products that belong to Order method', () => {
-    expect(store.authenticate).toBeDefined()
+    expect(store.addProduct).toBeDefined()
   })
 
   it('create method should add a product', async () => {
     const result = await store.create({
       id: 1,
-      username: 'sarah',
-      first_name: 'sara',
-      last_name: 'Ali',
-      password: '123456',
+      status: 'open',
+      user_id: 1,
     })
     expect(result).toEqual({
       id: 1,
-      username: 'sarah',
-      first_name: 'sara',
-      last_name: 'Ali',
-      password: '123456',
+      status: 'open',
+      user_id: 1,
     })
   })
 
@@ -41,22 +37,20 @@ describe('User Model', () => {
     expect(result).toEqual([
       {
         id: 1,
-        username: 'sarah',
-        first_name: 'sara',
-        last_name: 'Ali',
-        password: '123456',
+        status: 'open',
+        user_id: 1,
       },
     ])
   })
 
   it('show method should return the correct product', async () => {
     const result = await store.show('1')
-    expect(result).toEqual({
-      id: 1,
-      username: 'sarah',
-      first_name: 'sara',
-      last_name: 'Ali',
-      password: '123456',
-    })
+    expect(result).toEqual([
+      {
+        id: 1,
+        status: 'open',
+        user_id: 1,
+      },
+    ])
   })
 })
