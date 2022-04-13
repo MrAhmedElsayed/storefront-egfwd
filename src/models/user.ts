@@ -5,10 +5,10 @@ const pepper = process.env.BCRYPT_PASSWORD
 const saltRounds = process.env.SALT_ROUNDS || '10'
 
 export type User = {
-  id: number
+  id?: number
   username: string
-  first_name: string
-  last_name: string
+  first_name?: string
+  last_name?: string
   password: string
 }
 

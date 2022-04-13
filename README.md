@@ -38,7 +38,7 @@ Start the server
     CREATE USER full_stack_user WITH ENCRYPTED PASSWORD 'password123';
     GRANT ALL PRIVILEGES ON DATABASE full_stack_dev TO full_stack_user;
 ```
-Note: database run on **_localhost_** and **_port 5432_**
+**Note:** database run on **_localhost_** and **_port 5432_**
 
 fill the `.env` file with below variables then run `db-migrate up` to apply migrations to database.
 

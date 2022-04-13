@@ -16,7 +16,8 @@ const productRoutes = (app: express.Application) => {
   app.get('/products', index)
   app.get('/products/:productId', show)
   app.post('/products', verifyAuthToken, create)
-  // show how the product belongs to a single order. If we were to add a user as an owner of the order
+  // show how the product belongs to a single order.
+  // If we were to add a user as an owner of the order
   app.get('/user/:userID/orders/:orderID/products', userOrderProducts)
 }
 
@@ -43,7 +44,7 @@ const show = async (_req: Request, res: Response) => {
 const create = async (req: Request, res: Response) => {
   try {
     const product: Product = {
-      id: req.body.id,
+      // id: req.body.id,
       name: req.body.name,
       price: req.body.price,
     }

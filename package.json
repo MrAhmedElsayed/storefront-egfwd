@@ -10,7 +10,7 @@
     "watch": "tsc-watch --esModuleInterop src/server.ts --outDir ./dist --onSuccess \"node ./dist/server.js\"",
     "migrate": "db-migrate --env dev up && db-migrate up",
     "tsc": "tsc",
-    "test": "yarn tsc && set ENV=test db-migrate --env test up && jasmine && db-migrate db:drop test",
+    "test": "set ENV=test&&tsc&&db-migrate up --env test&&tsc&&jasmine&&db-migrate reset --env test",
     "format": "prettier --config .prettierrc \"src/**/*.{js,html,ts}\" --write",
     "lint": "yarn format && eslint --ext \"src/**/*.{js,ts}\"",
     "lint:fix": "yarn lint --fix"
