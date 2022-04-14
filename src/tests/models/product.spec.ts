@@ -55,6 +55,9 @@ describe('Product Model', () => {
 
   // clear a table in PostgreSQL
   afterAll(async () => {
-    await Client.query('TRUNCATE TABLE products CASCADE')
+    const connection_pool = await Client.connect()
+    await connection_pool.query('ALTER SEQUENCE products_id_seq RESTART WITH 1')
+    await connection_pool.query('TRUNCATE TABLE products CASCADE')
+    connection_pool.release()
   })
 })

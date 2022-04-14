@@ -56,7 +56,11 @@ describe('The Orders End-Points', () => {
 
   // empty the database
   afterAll(async () => {
-    await Client.query('TRUNCATE TABLE orders CASCADE')
-    await Client.query('TRUNCATE TABLE users CASCADE')
+    const connection_pool = await Client.connect()
+    await connection_pool.query('ALTER SEQUENCE users_id_seq RESTART WITH 1')
+    await connection_pool.query('ALTER SEQUENCE orders_id_seq RESTART WITH 1')
+    await connection_pool.query('TRUNCATE TABLE orders CASCADE')
+    await connection_pool.query('TRUNCATE TABLE users CASCADE')
+    await connection_pool.release()
   })
 })

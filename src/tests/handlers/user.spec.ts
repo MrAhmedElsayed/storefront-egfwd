@@ -75,12 +75,14 @@ describe('The Orders End-Points', () => {
       .set('Authorization', `Bearer ${token}`)
 
       .expect(200)
-    console.log('response.body=> users/2', response.body)
-    expect(response.body.username).toBe('ahmed')
+    expect(response.body.username).toBe('ali')
   })
 
   // clear a table in PostgreSQL
   afterAll(async () => {
-    await Client.query('TRUNCATE TABLE users CASCADE')
+    const connection_pool = await Client.connect()
+    await connection_pool.query('ALTER SEQUENCE users_id_seq RESTART WITH 1')
+    await connection_pool.query('TRUNCATE TABLE users CASCADE')
+    await connection_pool.release()
   })
 })
