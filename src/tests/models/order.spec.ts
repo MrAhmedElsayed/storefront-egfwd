@@ -1,4 +1,5 @@
 import { OrderModel } from '../../models/order'
+import Client from '../../database'
 
 const store = new OrderModel()
 
@@ -52,5 +53,10 @@ describe('Order Model', () => {
         user_id: 1,
       },
     ])
+  })
+
+  // clear a table in PostgreSQL
+  afterAll(async () => {
+    await Client.query('TRUNCATE TABLE orders CASCADE')
   })
 })

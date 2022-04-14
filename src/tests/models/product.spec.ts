@@ -1,4 +1,5 @@
 import { ProductModel } from '../../models/product'
+import Client from '../../database'
 
 const store = new ProductModel()
 
@@ -50,5 +51,10 @@ describe('Product Model', () => {
       name: 'Corsair Vengeance RGB Pro SL 32GB',
       price: 250,
     })
+  })
+
+  // clear a table in PostgreSQL
+  afterAll(async () => {
+    await Client.query('TRUNCATE TABLE products CASCADE')
   })
 })

@@ -8,7 +8,7 @@ const request = supertest(app)
 
 const user_store = new UserStore()
 
-fdescribe('The Orders End-Points', () => {
+describe('The Orders End-Points', () => {
   // First: check if the endpoints is defined
   it('should have an create method', () => {
     expect(user_store.create).toBeDefined()
@@ -44,12 +44,13 @@ fdescribe('The Orders End-Points', () => {
       password: '123',
     }
 
-    //  create user from endpoint [token required]
+    // create user from endpoint [token required]
     const response = await request
       .post('/users')
       .set('Authorization', `Bearer ${token}`)
       .send(endpoint_user)
       .expect(200)
+    // note that the response is a token, so we need to decode it to get the created user
     const decode = jwt.verify(
       response.body,
       process.env.TOKEN_SECRET || 'secret'
@@ -60,10 +61,26 @@ fdescribe('The Orders End-Points', () => {
     expect(eval_user.user.last_name).toBe(endpoint_user.last_name)
   })
 
-  // after all drop "test" database tables
+  it('should get all users', async () => {
+    const response = await request
+      .get('/users')
+      .set('Authorization', `Bearer ${token}`)
+      .expect(200)
+    expect(response.body.length).toBe(2)
+  })
+
+  it('should get a user', async () => {
+    const response = await request
+      .get('/users/2')
+      .set('Authorization', `Bearer ${token}`)
+
+      .expect(200)
+    console.log('response.body=> users/2', response.body)
+    expect(response.body.username).toBe('ahmed')
+  })
+
+  // clear a table in PostgreSQL
   afterAll(async () => {
-    await Client.query(
-      'DROP TABLE IF EXISTS migrations , users, products, orders, order_products'
-    )
+    await Client.query('TRUNCATE TABLE users CASCADE')
   })
 })

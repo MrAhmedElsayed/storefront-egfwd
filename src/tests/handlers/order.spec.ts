@@ -54,10 +54,9 @@ describe('The Orders End-Points', () => {
     expect(response.body[0]).toEqual(createOrder)
   })
 
-  // after all drop "test" database tables
+  // empty the database
   afterAll(async () => {
-    await Client.query(
-      'DROP TABLE IF EXISTS migrations , users, products, orders, order_products'
-    )
+    await Client.query('TRUNCATE TABLE orders CASCADE')
+    await Client.query('TRUNCATE TABLE users CASCADE')
   })
 })

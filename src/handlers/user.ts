@@ -41,8 +41,8 @@ const index = async (_req: Request, res: Response) => {
   res.json(users)
 }
 
-const show = async (_req: Request, res: Response) => {
-  const user = await store.show(_req.params.userId)
+const show = async (req: Request, res: Response) => {
+  const user = await store.show(req.params.userId)
   if (user) {
     res.json(user)
   } else {

@@ -1,4 +1,5 @@
 import { UserStore } from '../../models/user'
+import Client from '../../database'
 
 const store = new UserStore()
 
@@ -58,5 +59,10 @@ describe('User Model', () => {
       last_name: 'Ali',
       password: '123456',
     })
+  })
+
+  // clear a table in PostgreSQL
+  afterAll(async () => {
+    await Client.query('TRUNCATE TABLE users CASCADE')
   })
 })
