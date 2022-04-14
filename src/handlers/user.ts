@@ -15,15 +15,11 @@ const userRoutes = (app: express.Application) => {
   app.get('/users', verifyAuthToken, index)
   app.get('/users/:userId/', verifyAuthToken, show)
   app.post('/users', verifyAuthToken, create)
-  // app.post('/users', create)
 }
 
 const authenticate = async (req: Request, res: Response) => {
   const user: User = {
-    // id: req.body.id,
     username: req.body.username,
-    // first_name: req.body.first_name,
-    // last_name: req.body.last_name,
     password: req.body.password,
   }
 
@@ -57,7 +53,6 @@ const show = async (_req: Request, res: Response) => {
 const create = async (req: Request, res: Response) => {
   try {
     const user: User = {
-      // id: req.body.id,
       username: req.body.username,
       first_name: req.body.first_name,
       last_name: req.body.last_name,

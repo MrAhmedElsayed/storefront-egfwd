@@ -49,7 +49,7 @@ const show = async (req: Request, res: Response) => {
 const create = async (req: Request, res: Response) => {
   try {
     const order: Order = {
-      id: req.body.id,
+      // id: req.body.id,
       status: req.body.status,
       user_id: parseInt(req.params.userId),
     }

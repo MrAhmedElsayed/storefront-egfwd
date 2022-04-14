@@ -3,23 +3,25 @@ import app from '../../server'
 import { User, UserStore } from '../../models/user'
 import { generateToken } from '../../utils/generateToken'
 import Client from '../../database'
+import { ProductModel } from '../../models/product'
 
 const request = supertest(app)
 
-const store = new UserStore()
+const user_store = new UserStore()
+const product_store = new ProductModel()
 
-xdescribe('The products End-Points', () => {
+describe('The products End-Points', () => {
   // First: check if the endpoints is defined
   it('should have an create method', async () => {
-    expect(store.create).toBeDefined()
+    expect(product_store.create).toBeDefined()
   })
 
   it('should have an index method', async () => {
-    expect(store.index).toBeDefined()
+    expect(product_store.index).toBeDefined()
   })
 
   it('should have an show method', async () => {
-    expect(store.show).toBeDefined()
+    expect(product_store.show).toBeDefined()
   })
 
   // this variable will be used to store the user token
@@ -32,11 +34,12 @@ xdescribe('The products End-Points', () => {
       last_name: 'el-sayed',
       password: '123',
     }
-    const createUser = await store.create(user)
+    const createUser = await user_store.create(user)
     // Create a token before starting the tests to use it in the backend
     token = await generateToken(createUser)
   })
 
+  // Second: check if the endpoints is working
   it('should create product', async () => {
     const res = await request
       .post('/products')
